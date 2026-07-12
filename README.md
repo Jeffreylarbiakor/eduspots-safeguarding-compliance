@@ -136,5 +136,3 @@ Synthetic Catalyst data was generated with a fixed seed so the demo is reproduci
 ## Licence
 
 MIT — see `LICENSE`.
-
-*Part of an EduSpots operations automation portfolio prepared for the Head of Programme & Product Operations interview.*
