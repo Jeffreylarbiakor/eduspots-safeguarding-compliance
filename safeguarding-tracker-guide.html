@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Keeping Spots Safe — Training Compliance Tracker · Product Guide</title>
+<link rel="icon" href="assets/favicon.ico" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  background: #F6F2E9;
+  color: #1A1A16;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Tokens ─────────────────────────────────────────────────── */
+:root {
+  --forest:       #123524;
+  --forest-light: #1F5C3D;
+  --gold:         #D9A62E;
+  --gold-soft:    #F0D89B;
+  --sky:          #3E7CB1;
+  --clay:         #B54834;
+  --paper:        #F6F2E9;
+  --panel:        #FFFFFF;
+  --ink:          #1A1A16;
+  --muted:        #6B6558;
+  --line:         rgba(26,26,22,0.10);
+}
+
+/* ── Cover ──────────────────────────────────────────────────── */
+.cover {
+  background: var(--forest);
+  color: #fff;
+  padding: 72px 60px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 5px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--forest-light) 0px, var(--forest-light) 8px,
+    var(--gold)         8px, var(--gold)         10px,
+    var(--forest-light) 10px, var(--forest-light) 12px,
+    #fff                12px, #fff                13px,
+    var(--forest-light) 13px, var(--forest-light) 15px
+  );
+}
+
+.cover-eyebrow {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cover-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.cover-title {
+  font-family: "Space Grotesk", ui-sans-serif, sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #fff;
+  max-width: 700px;
+  margin-bottom: 20px;
+}
+
+.cover-subtitle {
+  font-size: 16px;
+  color: rgba(255,255,255,0.65);
+  max-width: 560px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.cover-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.cover-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cover-meta-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.40);
+}
+
+.cover-meta-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+}
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 32px 80px;
+}
+
+/* ── TOC ────────────────────────────────────────────────────── */
+.toc {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--forest);
+  border-radius: 6px;
+  padding: 28px 32px;
+  margin: 44px 0 60px;
+}
+
+.toc-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.toc-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 40px;
+}
+
+.toc-list a {
+  font-size: 14px;
+  color: var(--forest-light);
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toc-list a:hover { text-decoration: underline; }
+
+.toc-num {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  color: var(--muted);
+  width: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Section headings ───────────────────────────────────────── */
+.section {
+  margin-bottom: 60px;
+}
+
+.section-eyebrow {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-eyebrow::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.section-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+
+.section-lead {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 680px;
+  margin-bottom: 28px;
+  line-height: 1.65;
+}
+
+/* ── Feature cards ──────────────────────────────────────────── */
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.feature-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 20px 22px;
+}
+
+.feature-card-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(18,53,36,0.08);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  color: var(--forest);
+}
+
+.feature-card-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.feature-card-body {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── View breakdowns ────────────────────────────────────────── */
+.view-block {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.view-block-header {
+  padding: 18px 24px 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.view-block-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.icon-forest { background: rgba(18,53,36,0.10); color: var(--forest); }
+.icon-sky    { background: rgba(62,124,177,0.12); color: var(--sky); }
+.icon-gold   { background: rgba(217,166,46,0.15); color: #9B7119; }
+.icon-clay   { background: rgba(181,72,52,0.12); color: var(--clay); }
+
+.view-block-name {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.view-block-tagline {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.view-block-body {
+  padding: 20px 24px;
+}
+
+.view-block-body p {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.view-block-body p:last-of-type { margin-bottom: 0; }
+
+/* ── Element list ───────────────────────────────────────────── */
+.element-list {
+  list-style: none;
+  margin-top: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.element-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.element-item:last-child { border-bottom: none; }
+
+.element-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--forest-light);
+  background: rgba(18,53,36,0.08);
+  padding: 2px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  align-self: flex-start;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.element-desc {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── Status pills ───────────────────────────────────────────── */
+.status-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.status-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  border-left-width: 3px;
+}
+
+.status-item.status-compliant  { border-left-color: var(--forest-light); }
+.status-item.status-expiring   { border-left-color: var(--gold); }
+.status-item.status-overdue    { border-left-color: var(--clay); }
+
+.status-pill {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.pill-compliant  { background: rgba(31,92,61,0.12);  color: var(--forest-light); }
+.pill-expiring   { background: rgba(217,166,46,0.18); color: #9B7119; }
+.pill-overdue    { background: rgba(181,72,52,0.14);  color: var(--clay); }
+.pill-ack        { background: rgba(31,92,61,0.12);   color: var(--forest-light); }
+
+.status-content {}
+
+.status-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.status-conditions {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── Callout boxes ──────────────────────────────────────────── */
+.callout {
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 24px 0;
+  font-size: 14px;
+  line-height: 1.65;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.callout-principle {
+  background: rgba(18,53,36,0.06);
+  border: 1px solid rgba(18,53,36,0.15);
+}
+
+.callout-note {
+  background: rgba(217,166,46,0.10);
+  border: 1px solid rgba(217,166,46,0.25);
+}
+
+.callout-scope {
+  background: rgba(62,124,177,0.08);
+  border: 1px solid rgba(62,124,177,0.20);
+}
+
+.callout-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.callout strong {
+  display: block;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+}
+
+.callout p { color: var(--muted); margin: 0; }
+
+/* ── Workflow diagram ───────────────────────────────────────── */
+.workflow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 20px 0;
+  position: relative;
+}
+
+.workflow-step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding-bottom: 24px;
+  position: relative;
+}
+
+.workflow-step:last-child { padding-bottom: 0; }
+
+.workflow-step::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 36px;
+  bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+
+.workflow-step:last-child::before { display: none; }
+
+.workflow-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--forest);
+  color: #fff;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.workflow-content {
+  padding-top: 6px;
+}
+
+.workflow-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.workflow-body {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── Who does what table ────────────────────────────────────── */
+.role-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.role-table th {
+  background: var(--paper);
+  padding: 10px 16px;
+  text-align: left;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+}
+
+.role-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.role-table tr:last-child td { border-bottom: none; }
+
+.role-tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.tag-head { background: rgba(18,53,36,0.10); color: var(--forest); }
+.tag-rc   { background: rgba(62,124,177,0.12); color: #29618F; }
+.tag-auto { background: rgba(217,166,46,0.15); color: #9B7119; }
+
+/* ── Boundary box ───────────────────────────────────────────── */
+.boundary-box {
+  background: var(--panel);
+  border: 2px solid var(--forest);
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin: 24px 0;
+}
+
+.boundary-box-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.boundary-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.boundary-col-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.boundary-col-label.yes { color: var(--forest-light); }
+.boundary-col-label.no  { color: var(--clay); }
+
+.boundary-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.boundary-col li {
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
+}
+
+.boundary-col li::before {
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.boundary-col.yes li::before { content: "✓"; color: var(--forest-light); }
+.boundary-col.no  li::before { content: "✕"; color: var(--clay); }
+
+/* ── Divider ────────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 52px 0;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.footer {
+  background: var(--forest);
+  color: rgba(255,255,255,0.5);
+  padding: 32px 60px;
+  font-size: 12px;
+  font-family: "IBM Plex Mono", monospace;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-left { line-height: 1.8; }
+.footer-right { color: rgba(255,255,255,0.3); }
+
+/* ── Print ──────────────────────────────────────────────────── */
+@media print {
+  body { background: #fff; }
+  .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { padding: 0 20px 40px; }
+  .view-block, .feature-card, .status-item, .callout, .boundary-box { break-inside: avoid; }
+  .section { break-inside: avoid; }
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 680px) {
+  .cover { padding: 48px 24px 44px; }
+  .page { padding: 0 20px 60px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .toc-list { grid-template-columns: 1fr; }
+  .boundary-cols { grid-template-columns: 1fr; }
+  .footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     COVER
+================================================================ -->
+<div class="cover">
+  <div class="cover-eyebrow">EduSpots Operations Portfolio · Project 4 of 5</div>
+  <h1 class="cover-title">Keeping Spots Safe — Training Compliance Tracker</h1>
+  <p class="cover-subtitle">
+    A product guide for the Head of Programme and Product Operations —
+    how this tool works, what each section does, and how it fits into
+    the safeguarding leadership responsibilities of the role.
+  </p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Maps to JD line</span>
+      <span class="cover-meta-value">Leadership role in safeguarding — Keeping Spots Safe</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Network covered</span>
+      <span class="cover-meta-value">130+ Catalysts · 4 RC clusters · Ghana</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Status</span>
+      <span class="cover-meta-value">Prototype · synthetic demo data</span>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ================================================================
+     TABLE OF CONTENTS
+================================================================ -->
+<nav class="toc" aria-label="Table of contents">
+  <p class="toc-title">Contents</p>
+  <ul class="toc-list">
+    <li><a href="#what-it-is"><span class="toc-num">01</span> What this tool is</a></li>
+    <li><a href="#scope-boundary"><span class="toc-num">02</span> What it doesn't do — and why</a></li>
+    <li><a href="#the-principle"><span class="toc-num">03</span> The core principle</a></li>
+    <li><a href="#overview-view"><span class="toc-num">04</span> Overview view</a></li>
+    <li><a href="#roster-view"><span class="toc-num">05</span> Compliance roster</a></li>
+    <li><a href="#clusters-view"><span class="toc-num">06</span> RC clusters</a></li>
+    <li><a href="#reminders-view"><span class="toc-num">07</span> Renewal reminders</a></li>
+    <li><a href="#status-rules"><span class="toc-num">08</span> How status is calculated</a></li>
+    <li><a href="#workflow"><span class="toc-num">09</span> Typical weekly workflow</a></li>
+    <li><a href="#who-does-what"><span class="toc-num">10</span> Who does what</a></li>
+    <li><a href="#roadmap"><span class="toc-num">11</span> Next steps if built for real</a></li>
+  </ul>
+</nav>
+
+
+<!-- ================================================================
+     01 — WHAT IT IS
+================================================================ -->
+<section class="section" id="what-it-is">
+  <p class="section-eyebrow">01</p>
+  <h2 class="section-title">What this tool is</h2>
+  <p class="section-lead">
+    A network-wide view of who has completed safeguarding training, when their
+    training expires, and who needs to renew — across all 130+ Catalysts and
+    headteachers in the EduSpots network.
+  </p>
+
+  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-bottom:16px;">
+    Right now, training compliance across 130+ Catalysts likely lives in a
+    patchwork of spreadsheets, WhatsApp conversations with RCs, and calendar
+    reminders held by individuals. That works when the network is small. It starts
+    to break down when you need to answer questions like: which Catalysts haven't
+    renewed in over a year? How many of Cynthia's Spots have an overdue training
+    in this cycle? Is the Northern cluster's compliance rate lower than the
+    Volta cluster's, and if so, why?
+  </p>
+
+  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-bottom:28px;">
+    This tracker consolidates that picture. It doesn't replace the RC relationships
+    or the <em>Keeping Spots Safe</em> policy — it sits above them, giving the Head
+    of Programme and Product Operations a network-level view of training compliance
+    that makes renewal follow-ups faster, more consistent, and easier to
+    account for when reporting to trustees or funders.
+  </p>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M6 20V10M12 20V4M18 20v-6"/></svg>
+      </div>
+      <div class="feature-card-title">Network-wide in one view</div>
+      <div class="feature-card-body">See all 130+ Catalysts and their training status without opening a single spreadsheet or chasing an RC for an update.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="feature-card-title">Specific, date-based flags</div>
+      <div class="feature-card-body">Every flag carries the exact reason — "Training expired 47 days ago" not just a red dot — so you know what conversation to have before you pick up the phone.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="feature-card-title">30-day early warning</div>
+      <div class="feature-card-body">Catalysts flagged as "expiring soon" before they tip into overdue — so renewal conversations happen with lead time, not after the fact.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div class="feature-card-title">Human decision, always</div>
+      <div class="feature-card-body">The tool surfaces who needs follow-up. Every renewal conversation, RC notification, and training arrangement is made by a person — the Head of Ops, an RC, or both together.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     02 — SCOPE BOUNDARY
+================================================================ -->
+<section class="section" id="scope-boundary">
+  <p class="section-eyebrow">02</p>
+  <h2 class="section-title">What it doesn't do — and why</h2>
+  <p class="section-lead">
+    This is a training logistics tracker. Getting the scope right is not a design
+    preference — it's a safeguarding requirement.
+  </p>
+
+  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-bottom:24px;">
+    The most important thing to understand about this tool is what it was
+    deliberately designed <em>not</em> to do. A safeguarding compliance tracker
+    that also stored incident reports, concerns, or case notes would be dangerous:
+    it would mix training logistics with sensitive personal data in a system
+    not designed to handle it, and would risk creating an unofficial parallel
+    record outside EduSpots' actual safeguarding processes.
+  </p>
+
+  <div class="boundary-box">
+    <div class="boundary-box-title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Structural scope boundary
+    </div>
+    <div class="boundary-cols">
+      <div class="boundary-col yes">
+        <p class="boundary-col-label yes">Tracked in this tool</p>
+        <ul>
+          <li>Training completion dates</li>
+          <li>Training expiry dates (12-month cycle)</li>
+          <li>Renewal status per Catalyst</li>
+          <li>Compliance rate by RC cluster</li>
+          <li>Training completion history (dates only)</li>
+          <li>Who is overdue and by how many days</li>
+          <li>Who is due to expire in the next 30 days</li>
+          <li>RC acknowledgement of follow-up notifications</li>
+        </ul>
+      </div>
+      <div class="boundary-col no">
+        <p class="boundary-col-label no">Not in this tool — by design</p>
+        <ul>
+          <li>Safeguarding incidents or reports</li>
+          <li>Concerns raised about any individual</li>
+          <li>Allegations or case notes</li>
+          <li>Catalyst conduct information of any kind</li>
+          <li>Contact details for children or families</li>
+          <li>Risk assessments or investigations</li>
+          <li>Any field that could be misread as a conduct record</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-top:20px;">
+    This boundary is structural, not just a display choice. The data model has
+    no fields for incident or concern data — they cannot be added to a row in
+    the database. They are not placeholders for a future version. For actual
+    safeguarding concerns, follow EduSpots' <em>Keeping Spots Safe</em> policy
+    and contact the designated leads directly.
+  </p>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     03 — THE PRINCIPLE
+================================================================ -->
+<section class="section" id="the-principle">
+  <p class="section-eyebrow">03</p>
+  <h2 class="section-title">The core principle</h2>
+  <p class="section-lead">Automation flags dates. A human decides what to do about them.</p>
+
+  <div class="callout callout-principle">
+    <span class="callout-icon">🌿</span>
+    <div>
+      <strong>Why this matters for safeguarding specifically</strong>
+      <p>A tool that auto-escalated overdue Catalysts to a central register, or that generated reports about an individual's training history without human review, would introduce risk rather than reduce it. An RC knows that a Catalyst is mid-way through a rescheduled training block, that a Spot has been temporarily closed, that a headteacher has been dealing with a family emergency. The tracker doesn't have that context. So it flags; you decide.</p>
+    </div>
+  </div>
+
+  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-top:20px;">
+    This principle is built into every interactive element. The "Acknowledge —
+    reminder sent" button on a flagged Catalyst doesn't change that Catalyst's
+    compliance status, mark them as retrained, or close the flag. It records
+    that a human has notified the relevant RC and that follow-up ownership has
+    been logged. Status can only change when a real completed training event
+    is recorded in the data — nothing the tool does can shortcut that.
+  </p>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     04 — OVERVIEW VIEW
+================================================================ -->
+<section class="section" id="overview-view">
+  <p class="section-eyebrow">04</p>
+  <h2 class="section-title">Overview view</h2>
+  <p class="section-lead">The starting screen. A pulse-check on the whole network before you go deeper.</p>
+
+  <div class="view-block">
+    <div class="view-block-header">
+      <div class="view-block-icon icon-forest">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <div>
+        <div class="view-block-name">Overview</div>
+        <div class="view-block-tagline">KPI row · compliance-by-cluster chart · 12-month completions chart</div>
+      </div>
+    </div>
+    <div class="view-block-body">
+      <p>The Overview loads first when you open the tracker. It answers the most common Monday-morning question: <em>what's the state of training compliance across the network right now?</em></p>
+      <p>The KPI row gives five numbers at a glance. The two charts underneath show whether renewal activity is keeping pace with expiries, and whether any RC cluster is systematically falling behind.</p>
+
+      <ul class="element-list">
+        <li class="element-item">
+          <span class="element-label">Total Catalysts</span>
+          <span class="element-desc">The full count of Catalysts in the tracker. In a live system, this would match the active Catalyst register maintained by EduSpots — not including volunteers who have left the network.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Currently compliant</span>
+          <span class="element-desc">The percentage of all Catalysts with a valid, non-expired training record. This is the headline compliance figure — the one to track week-on-week and report to trustees. A rising percentage means renewal follow-ups are working; a falling one means the network is getting behind.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Expiring in 30 days</span>
+          <span class="element-desc">Catalysts whose current training expires within the next 30 days. These are the early-warning cases — they're still technically compliant, but need to schedule a renewal now to avoid slipping into overdue. This is the number to act on before it becomes a problem.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Currently overdue</span>
+          <span class="element-desc">Catalysts whose training has already expired. Any Catalyst in this count is operating without a valid training record. A high number here warrants an urgent conversation with the relevant RC cluster leads.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Average days overdue</span>
+          <span class="element-desc">For overdue Catalysts only — how long, on average, training has been lapsed. A low number suggests recent expiry (renewals are just slipping behind); a high number suggests a systemic gap in a cluster or Spot where follow-up hasn't been reaching.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Compliance rate by RC cluster</span>
+          <span class="element-desc">A horizontal bar chart showing each RC's cluster compliance rate. Green bars indicate 85%+ compliance; gold indicates 70–84%; clay/red below 70%. An obvious imbalance here is a prompt for a direct conversation with that RC about what's causing the gap — not an automatic escalation.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Training completions — last 12 months</span>
+          <span class="element-desc">A line chart showing how many training completions were recorded each calendar month. Lets you spot seasonal patterns (e.g. training surges before school terms), identify months where completions dropped unexpectedly, and check whether renewal activity is keeping pace with the network's 12-month cycle.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     05 — COMPLIANCE ROSTER
+================================================================ -->
+<section class="section" id="roster-view">
+  <p class="section-eyebrow">05</p>
+  <h2 class="section-title">Compliance roster</h2>
+  <p class="section-lead">Every Catalyst in the network, their current status, and their training history — in one filterable table.</p>
+
+  <div class="view-block">
+    <div class="view-block-header">
+      <div class="view-block-icon icon-sky">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      </div>
+      <div>
+        <div class="view-block-name">Compliance roster</div>
+        <div class="view-block-tagline">All Catalysts · filterable by RC cluster and status · click for training history</div>
+      </div>
+    </div>
+    <div class="view-block-body">
+      <p>The roster is the operational record of the network's training compliance. Every Catalyst appears here with their Spot, RC, completion date, expiry date, and status. Filter to narrow to a specific cluster before an RC check-in call, or filter to "Overdue" to get an immediate working list for urgent follow-up.</p>
+      <p>Clicking any row opens a detail panel showing that Catalyst's full training history — a simple list of completion dates in reverse chronological order, with the most recent marked "current". Nothing beyond training dates is stored or shown.</p>
+
+      <ul class="element-list">
+        <li class="element-item">
+          <span class="element-label">Name</span>
+          <span class="element-desc">The Catalyst's name. In a live system this would link to the master Catalyst register. Note: in this prototype, all names are synthetic composites — no real individuals are represented.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Spot</span>
+          <span class="element-desc">The named EduSpots location this Catalyst is associated with. All Spot names in the prototype are real — drawn from EduSpots' published network of 49+ Spots across Ghana.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Regional Coordinator</span>
+          <span class="element-desc">The RC whose cluster this Spot belongs to: Cynthia Mawuena Tetteh (Volta Region), Getrude Akunlibe (Northern Region), Abdul Wadud Suleiman (Central/Western Regions), or Abdul-Malik Iddrisu (New Spots).</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Completion date</span>
+          <span class="element-desc">The date the most recent training was completed. The 12-month renewal window runs from this date.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Expiry date</span>
+          <span class="element-desc">Completion date + 12 months. If today is past this date, the Catalyst is overdue. If today is within 30 days of this date, the Catalyst is expiring soon.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Status badge</span>
+          <span class="element-desc">Computed automatically from the expiry date — never manually assigned. Green = compliant, gold = expiring soon, clay/red = overdue. The badge colour matches the same palette used across all five portfolio tools.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">RC cluster filter</span>
+          <span class="element-desc">Narrows the table to a single RC's Catalysts. Use this before a cluster check-in call — you'll arrive knowing exactly which of that RC's Catalysts are flagged before the conversation starts.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Status filter</span>
+          <span class="element-desc">Filter to "Overdue" for an immediate working list of Catalysts who need urgent follow-up. Filter to "Expiring soon" to plan ahead. Filter to "Compliant" to confirm which Spots are covered.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Training history (detail panel)</span>
+          <span class="element-desc">Click any row to see the full list of prior training completions for that Catalyst — dates only, in reverse chronological order. This is the complete scope of the detail view. There are no conduct fields, no notes fields, and no free-text input in this panel.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     06 — RC CLUSTERS
+================================================================ -->
+<section class="section" id="clusters-view">
+  <p class="section-eyebrow">06</p>
+  <h2 class="section-title">RC clusters</h2>
+  <p class="section-lead">Compliance grouped by Regional Coordinator — the fastest way to identify which cluster needs the most attention this cycle.</p>
+
+  <div class="view-block">
+    <div class="view-block-header">
+      <div class="view-block-icon icon-gold">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div>
+        <div class="view-block-name">RC clusters</div>
+        <div class="view-block-tagline">4 clusters · compliant / expiring / overdue counts · cluster compliance %</div>
+      </div>
+    </div>
+    <div class="view-block-body">
+      <p>Each row in this view represents one Regional Coordinator and the Catalysts within their cluster. This is the view to open before a cluster-level reporting conversation — with the Keeping Spots Safe Coordinator, the Head of Education, or in a trustee update.</p>
+      <p>The cluster compliance percentage is colour-coded: green at 85%+, gold between 70–84%, clay below 70%. An obvious gap between clusters is a signal, not a conclusion — it warrants a conversation with that RC about what's driving the numbers, not an automatic escalation.</p>
+
+      <ul class="element-list">
+        <li class="element-item">
+          <span class="element-label">Total</span>
+          <span class="element-desc">Total number of Catalysts in this RC's cluster.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Compliant</span>
+          <span class="element-desc">Catalysts with a valid, non-expired training record in this cluster.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Expiring soon</span>
+          <span class="element-desc">Catalysts in this cluster whose training expires within 30 days. The gold badge signals early-warning status — still compliant, but needs scheduling now.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Overdue</span>
+          <span class="element-desc">Catalysts in this cluster whose training has already expired. The clay/red badge signals that follow-up with the RC is needed.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Cluster %</span>
+          <span class="element-desc">The percentage of this RC's Catalysts who are currently compliant. The colour-coded pill (green / gold / clay) gives an at-a-glance read of cluster health without needing to calculate from the raw counts.</span>
+        </li>
+      </ul>
+
+      <div class="callout callout-note" style="margin-top:20px;">
+        <span class="callout-icon">💡</span>
+        <div>
+          <strong>How to use this view in a cluster reporting conversation</strong>
+          <p>Pull this view up before a call or written update. If one cluster's percentage is significantly lower than the others, it becomes the lead agenda item — which Spots are contributing most to the gap, and what does the RC need from HQ to close it. The Compliance Roster filtered by that RC's name gives the specific Catalyst-level detail for the conversation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     07 — RENEWAL REMINDERS
+================================================================ -->
+<section class="section" id="reminders-view">
+  <p class="section-eyebrow">07</p>
+  <h2 class="section-title">Renewal reminders</h2>
+  <p class="section-lead">The action view — every Catalyst who needs follow-up, with the specific reason and a way to log that the relevant RC has been notified.</p>
+
+  <div class="view-block">
+    <div class="view-block-header">
+      <div class="view-block-icon icon-clay">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div>
+        <div class="view-block-name">Renewal reminders</div>
+        <div class="view-block-tagline">Flagged Catalysts only · specific date-based reasons · acknowledge for follow-up</div>
+      </div>
+    </div>
+    <div class="view-block-body">
+      <p>This view collects every Catalyst who is overdue or expiring soon — sorted with the worst cases at the top (most overdue first, then by how soon expiry is approaching). Each card shows the specific reason in plain language, so you arrive at a follow-up conversation already knowing what you're dealing with.</p>
+      <p>The "Acknowledge — reminder sent" button records that the relevant RC has been notified and owns follow-up. It doesn't raise a training record, doesn't change the Catalyst's status, and doesn't send a notification automatically. It's a human handshake: I've seen this, the RC has been contacted, follow-up is in hand.</p>
+
+      <ul class="element-list">
+        <li class="element-item">
+          <span class="element-label">Date-based reason</span>
+          <span class="element-desc">Every card states the specific, date-derived reason the Catalyst was flagged — e.g. "Training expired 23 days ago" or "Expires in 11 days — renewal not yet scheduled." Never a behavioural inference, always a date calculation.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Spot and RC on the card</span>
+          <span class="element-desc">The Catalyst's Spot name and RC are shown directly on each card — you don't need to open a detail panel to know who to contact about follow-up.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Expiry date</span>
+          <span class="element-desc">The specific date training expired or will expire — shown alongside the reason so you have the exact date if you need it for a written update or RC conversation.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Acknowledge — reminder sent</span>
+          <span class="element-desc">Marks that the RC has been notified and follow-up ownership has been logged. The button becomes a "✓ Reminder sent to RC" confirmation and the card dims. In this prototype, acknowledgements reset on page refresh — in a live system they would persist with a timestamp and the name of whoever logged them.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Sort order</span>
+          <span class="element-desc">Overdue Catalysts (most lapsed first) appear above expiring-soon Catalysts — so the most urgent cases are at the top of the list without any manual sorting needed.</span>
+        </li>
+      </ul>
+
+      <div class="callout callout-note" style="margin-top:20px;">
+        <span class="callout-icon">💡</span>
+        <div>
+          <strong>How to use this view in a weekly safeguarding review</strong>
+          <p>Open this view at the start of each week. Work through the overdue cards first. For each: is this situation already known to the relevant RC? Acknowledge it. Is it a surprise? It needs a direct call. Then move to expiring-soon — these are the early warnings to address before they become overdue. The goal is to reduce the number of cards in this view over time, not to manage a permanent list of flags.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     08 — STATUS RULES
+================================================================ -->
+<section class="section" id="status-rules">
+  <p class="section-eyebrow">08</p>
+  <h2 class="section-title">How status is calculated</h2>
+  <p class="section-lead">Every status is computed by a named function with explicit rules — no hidden scoring, no black box, no behavioural inference.</p>
+
+  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-bottom:24px;">
+    The rules are the same regardless of which view you're in. A Catalyst flagged
+    as "overdue" in the Renewal Reminders view is overdue for the same reason
+    their badge shows clay/red in the Compliance Roster. The reason is always
+    shown explicitly alongside the status — never implied by a colour alone.
+  </p>
+
+  <h3 style="font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:700; color:#1A1A16; margin-bottom:14px;">Training compliance status</h3>
+  <div class="status-row">
+    <div class="status-item status-overdue">
+      <span class="status-pill pill-overdue">Overdue</span>
+      <div class="status-content">
+        <div class="status-name">Today's date is past the Catalyst's expiry date.</div>
+        <div class="status-conditions">The tool calculates: <strong>today &gt; completionDate + 12 months</strong>. The exact number of days lapsed is shown on the Renewal Reminders card: "Training expired X days ago."</div>
+      </div>
+    </div>
+    <div class="status-item status-expiring">
+      <span class="status-pill pill-expiring">Expiring soon</span>
+      <div class="status-content">
+        <div class="status-name">The expiry date is within the next 30 days (and not already past).</div>
+        <div class="status-conditions">The tool calculates: <strong>0 ≤ daysUntilExpiry ≤ 30</strong>. The exact countdown is shown: "Expires in X days — renewal not yet scheduled."</div>
+      </div>
+    </div>
+    <div class="status-item status-compliant">
+      <span class="status-pill pill-compliant">Compliant</span>
+      <div class="status-content">
+        <div class="status-name">Neither of the above conditions apply.</div>
+        <div class="status-conditions">The expiry date is more than 30 days away. The Catalyst has a valid, current training record. No flag is raised.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-note" style="margin-top:24px;">
+    <span class="callout-icon">📋</span>
+    <div>
+      <strong>The 30-day window and 12-month cycle can be adjusted</strong>
+      <p>Both the 30-day expiring-soon threshold and the 12-month renewal cycle are starting points, not fixed policy. In a live deployment, the Head of Ops, the Keeping Spots Safe Coordinator, and the Head of Education would review these together and set thresholds that reflect what EduSpots considers a healthy training cadence. The renewal cycle assumption in particular should be confirmed against the actual <em>Keeping Spots Safe</em> programme specification before this tracker goes live.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-scope" style="margin-top:16px;">
+    <span class="callout-icon">🔒</span>
+    <div>
+      <strong>What status can and cannot represent</strong>
+      <p>Status reflects only one thing: whether a training record is current, approaching expiry, or lapsed. It cannot and does not reflect anything about a Catalyst's conduct, reliability, or safeguarding record. A Catalyst who is "overdue" has a lapsed training date — the tool makes no other inference from that fact.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     09 — WORKFLOW
+================================================================ -->
+<section class="section" id="workflow">
+  <p class="section-eyebrow">09</p>
+  <h2 class="section-title">Typical weekly workflow</h2>
+  <p class="section-lead">How the Head of Programme and Product Operations would use this in practice — from Monday morning to a follow-up conversation with an RC.</p>
+
+  <div class="workflow">
+    <div class="workflow-step">
+      <div class="workflow-num">1</div>
+      <div class="workflow-content">
+        <div class="workflow-title">Open Overview — read the network pulse</div>
+        <div class="workflow-body">Check the KPI row. Has overall compliance gone up or down since last week? Has the overdue count grown? Has the average days-overdue figure climbed, suggesting a cluster is falling further behind rather than catching up? These numbers set the agenda for the rest of the session.</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">2</div>
+      <div class="workflow-content">
+        <div class="workflow-title">Open Renewal Reminders — work through the overdue list</div>
+        <div class="workflow-body">Sort is automatic — worst cases first. For each overdue card: is this situation already known and being handled by the RC? Acknowledge it. Is it a surprise? That's a direct call to the RC. Move through expiring-soon cards next — these are the ones to act on before the next weekly review, not after.</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">3</div>
+      <div class="workflow-content">
+        <div class="workflow-title">Prepare for RC cluster calls — check the Clusters view</div>
+        <div class="workflow-body">Before a check-in call with, say, Getrude Akunlibe (Northern Region), open the Clusters view to see her cluster's overall compliance rate relative to the others. Then go to the Compliance Roster, filter by her name, and sort by status to see exactly which of her Catalysts are flagged. Arrive at the call with a specific agenda — not a general "how are things going?"</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">4</div>
+      <div class="workflow-content">
+        <div class="workflow-title">Use the Roster for funder or trustee reporting</div>
+        <div class="workflow-body">Filter to "All statuses" and the full network count gives the headline compliance figure for a written report. Filter to "Overdue" for the number of lapsed records. The cluster view gives a per-RC breakdown. These numbers can be pulled directly into a board or funder update without reformatting.</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">5</div>
+      <div class="workflow-content">
+        <div class="workflow-title">Make the renewal decision — outside the tool</div>
+        <div class="workflow-body">The tracker tells you who needs to train and when. The actual arrangement — scheduling a training session, coordinating with the Keeping Spots Safe Coordinator or Head of Education, reaching out to a Catalyst directly — happens outside the tool, in conversation with the relevant RC. The tracker is the shared evidence base, not the decision-maker.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     10 — WHO DOES WHAT
+================================================================ -->
+<section class="section" id="who-does-what">
+  <p class="section-eyebrow">10</p>
+  <h2 class="section-title">Who does what</h2>
+  <p class="section-lead">The tracker serves three roles differently. The tool does the date-tracking; people make every decision that matters.</p>
+
+  <table class="role-table">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Who</th>
+        <th>In the tool</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Monitor network-wide training compliance</td>
+        <td><span class="role-tag tag-head">Head of Ops</span></td>
+        <td>Overview KPIs + Clusters view</td>
+      </tr>
+      <tr>
+        <td>Identify which Catalysts are overdue for renewal</td>
+        <td><span class="role-tag tag-head">Head of Ops</span></td>
+        <td>Renewal Reminders — overdue cards</td>
+      </tr>
+      <tr>
+        <td>Prepare for cluster check-in calls</td>
+        <td><span class="role-tag tag-head">Head of Ops</span> <span class="role-tag tag-rc">RC</span></td>
+        <td>Clusters view + Roster filtered by RC</td>
+      </tr>
+      <tr>
+        <td>Log that an RC has been notified of a lapsed record</td>
+        <td><span class="role-tag tag-head">Head of Ops</span> <span class="role-tag tag-rc">RC</span></td>
+        <td>Acknowledge button — Renewal Reminders</td>
+      </tr>
+      <tr>
+        <td>Review training history for a specific Catalyst</td>
+        <td><span class="role-tag tag-head">Head of Ops</span> <span class="role-tag tag-rc">RC</span></td>
+        <td>Catalyst detail modal — Compliance Roster</td>
+      </tr>
+      <tr>
+        <td>Arrange or schedule a training renewal</td>
+        <td><span class="role-tag tag-head">Head of Ops</span> <span class="role-tag tag-rc">RC</span></td>
+        <td>Outside the tool — informed by it</td>
+      </tr>
+      <tr>
+        <td>Report compliance figures to funders or trustees</td>
+        <td><span class="role-tag tag-head">Head of Ops</span></td>
+        <td>Overview KPIs · Clusters view · Roster count</td>
+      </tr>
+      <tr>
+        <td>Liaise with Keeping Spots Safe Coordinator</td>
+        <td><span class="role-tag tag-head">Head of Ops</span></td>
+        <td>Outside the tool — tracker provides the data basis</td>
+      </tr>
+      <tr>
+        <td>Handle actual safeguarding concerns or incidents</td>
+        <td><span class="role-tag tag-head">Head of Ops</span> <span class="role-tag tag-rc">RC</span></td>
+        <td>Outside the tool — follow Keeping Spots Safe policy</td>
+      </tr>
+      <tr>
+        <td>Compute training status and flag renewals</td>
+        <td><span class="role-tag tag-auto">Automated</span></td>
+        <td>computeComplianceStatus() in data.js</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     11 — ROADMAP
+================================================================ -->
+<section class="section" id="roadmap">
+  <p class="section-eyebrow">11</p>
+  <h2 class="section-title">Next steps if built for real</h2>
+  <p class="section-lead">This is a working prototype built on synthetic data. Here's what a live deployment would add.</p>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <div class="feature-card-title">Live training records connection</div>
+      <div class="feature-card-body">Connect to a shared Google Sheet or Airtable base that RCs already update after each training session — so the tracker reflects real records without requiring a new data entry habit.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 000 6h20a3 3 0 000-6z"/><path d="M6 17V3h12v14"/></svg>
+      </div>
+      <div class="feature-card-title">WhatsApp / email digest</div>
+      <div class="feature-card-body">A weekly summary sent to the Head of Ops and each RC listing new flags in their cluster — so the tracker pushes renewal reminders rather than waiting to be opened.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+      </div>
+      <div class="feature-card-title">CSV export for reporting</div>
+      <div class="feature-card-body">Export the full roster or the overdue list to CSV for inclusion in trustee packs, funder reports, or RC cluster updates — without reformatting anything manually.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+      <div class="feature-card-title">RC-level authentication</div>
+      <div class="feature-card-body">Each RC logs in to see only their own cluster's Catalysts — protecting personal information and ensuring RCs have a focused view of their own responsibilities rather than the full network.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div class="feature-card-title">Acknowledge with attribution</div>
+      <div class="feature-card-body">Persist acknowledgements with a timestamp and the name of the person who logged them — a clear audit trail of who took ownership of a flagged Catalyst's follow-up and when.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <div class="feature-card-title">Integration with Project #1</div>
+      <div class="feature-card-body">Cross-reference training compliance with Spot activity data from the MEL Dashboard — so a Spot with low engagement AND an overdue Catalyst flags as a combined priority, not two separate items to track in separate tools.</div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /page -->
+
+<!-- ================================================================
+     FOOTER
+================================================================ -->
+<footer class="footer">
+  <div class="footer-left">
+    EduSpots — Keeping Spots Safe Training Compliance Tracker<br />
+    Project 4 of 5 · Head of Programme and Product Operations portfolio<br />
+    Prototype — all Catalyst names, training dates, and compliance records are synthetic demo data
+  </div>
+  <div class="footer-right">
+    eduspots.org
+  </div>
+</footer>
+
+</body>
+</html>
