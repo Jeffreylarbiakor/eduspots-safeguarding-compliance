@@ -92,15 +92,22 @@ function renderRoster() {
     const rc  = REAL_REGIONAL_COORDINATORS.find(r => r.id === c.rcId);
     const tr  = document.createElement("tr");
     tr.dataset.id = c.id;
+    tr.className = "clickable-row";
+    tr.tabIndex = 0;
+    tr.setAttribute("role", "button");
+    tr.setAttribute("aria-label", `View ${c.name} detail`);
     tr.innerHTML = `
       <td class="td-name">${escHtml(c.name)}</td>
       <td>${escHtml(c.spotName)}</td>
       <td>${escHtml(rc ? rc.name : "—")}</td>
-      <td class="td-mono">${formatDate(c.completionDate)}</td>
-      <td class="td-mono">${formatDate(c.expiryDate)}</td>
+      <td class="mono">${formatDate(c.completionDate)}</td>
+      <td class="mono">${formatDate(c.expiryDate)}</td>
       <td><span class="badge badge-${c.status}">${statusLabel(c.status)}</span></td>
     `;
     tr.addEventListener("click", () => openModal(c.id));
+    tr.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openModal(c.id); }
+    });
     tbody.appendChild(tr);
   });
 
@@ -152,33 +159,31 @@ function renderReminders() {
   }
 
   document.getElementById("reminders-count").textContent =
-    `${flagged.length} Catalyst${flagged.length !== 1 ? "s" : ""} require follow-up`;
+    `· ${flagged.length} Catalyst${flagged.length !== 1 ? "s" : ""} require follow-up`;
 
   flagged.forEach(c => {
     const rc  = REAL_REGIONAL_COORDINATORS.find(r => r.id === c.rcId);
     const ackd = isAcknowledged(c.id);
 
     const card = document.createElement("div");
-    card.className = `reminder-card reminder-card--${c.status}${ackd ? " reminder-card--ackd" : ""}`;
+    card.className = `flag-card status-${c.status}${ackd ? " flag-card--ackd" : ""}`;
     card.id = `reminder-${c.id}`;
     card.innerHTML = `
-      <div class="reminder-main">
-        <div class="reminder-header">
-          <span class="reminder-name">${escHtml(c.name)}</span>
-          <span class="badge badge-${c.status}">${statusLabel(c.status)}</span>
+      <div class="flag-card-header">
+        <div>
+          <span class="flag-name">${escHtml(c.name)}</span>
+          <span class="flag-cluster">${escHtml(c.spotName)} · RC: ${escHtml(rc ? rc.name : "—")}</span>
         </div>
-        <div class="reminder-meta">
-          <span>${escHtml(c.spotName)}</span>
-          <span class="sep">·</span>
-          <span>RC: ${escHtml(rc ? rc.name : "—")}</span>
-        </div>
-        <p class="reminder-reason">${escHtml(c.reason)}</p>
-        <p class="reminder-expiry">Expiry date: <span class="mono">${formatDate(c.expiryDate)}</span></p>
+        <span class="badge badge-${c.status}">${statusLabel(c.status)}</span>
       </div>
-      <div class="reminder-action">
+      <ul class="flag-reasons"><li class="flag-reason">${escHtml(c.reason)}</li></ul>
+      <div class="flag-meta">
+        <span>Expiry date: ${formatDate(c.expiryDate)}</span>
+      </div>
+      <div class="flag-actions">
         ${ackd
-          ? `<span class="ack-done">✓ Reminder sent to RC</span>`
-          : `<button class="btn-ack" data-id="${c.id}">Acknowledge — reminder sent</button>`
+          ? `<span class="ack-badge">✓ Reminder sent to RC</span>`
+          : `<button class="btn-acknowledge" data-id="${c.id}">Acknowledge — reminder sent</button>`
         }
         <p class="ack-note">Logging this acknowledges that an RC has been notified. It does not change this Catalyst's compliance status — only a completed training event can do that.</p>
       </div>
@@ -187,7 +192,7 @@ function renderReminders() {
   });
 
   // Bind acknowledge buttons
-  container.querySelectorAll(".btn-ack").forEach(btn => {
+  container.querySelectorAll(".btn-acknowledge").forEach(btn => {
     btn.addEventListener("click", e => {
       e.stopPropagation();
       const id = btn.dataset.id;
@@ -204,11 +209,12 @@ function openModal(catalystId) {
   const rc = REAL_REGIONAL_COORDINATORS.find(r => r.id === c.rcId);
 
   document.getElementById("modal-name").textContent   = c.name;
+  document.getElementById("modal-sub").textContent    = `${c.spotName} · ${rc ? rc.region : "—"}`;
   document.getElementById("modal-spot").textContent   = c.spotName;
   document.getElementById("modal-rc").textContent     = rc ? rc.name : "—";
   document.getElementById("modal-region").textContent = rc ? rc.region : "—";
-  document.getElementById("modal-status").innerHTML   =
-    `<span class="badge badge-${c.status}">${statusLabel(c.status)}</span>`;
+  document.getElementById("modal-status").className   = `badge badge-${c.status}`;
+  document.getElementById("modal-status").textContent = statusLabel(c.status);
   document.getElementById("modal-expiry").textContent = formatDate(c.expiryDate);
 
   // Training history list (completion dates only — nothing else)
@@ -232,13 +238,13 @@ function openModal(catalystId) {
     document.getElementById("modal-reason-row").classList.add("hidden");
   }
 
-  document.getElementById("modal-overlay").classList.remove("hidden");
+  document.getElementById("modal-overlay").classList.add("open");
   document.getElementById("modal-overlay").setAttribute("aria-hidden", "false");
   activeModal = catalystId;
 }
 
 function closeModal() {
-  document.getElementById("modal-overlay").classList.add("hidden");
+  document.getElementById("modal-overlay").classList.remove("open");
   document.getElementById("modal-overlay").setAttribute("aria-hidden", "true");
   activeModal = null;
 }
