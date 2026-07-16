@@ -8,679 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-<style>
-
-/* ── Reset ──────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; scroll-behavior: smooth; }
-
-body {
-  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
-  background: #F6F2E9;
-  color: #1A1A16;
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ── Tokens ─────────────────────────────────────────────────── */
-:root {
-  --forest:       #123524;
-  --forest-light: #1F5C3D;
-  --gold:         #D9A62E;
-  --gold-soft:    #F0D89B;
-  --sky:          #3E7CB1;
-  --clay:         #B54834;
-  --paper:        #F6F2E9;
-  --panel:        #FFFFFF;
-  --ink:          #1A1A16;
-  --muted:        #6B6558;
-  --line:         rgba(26,26,22,0.10);
-}
-
-/* ── Cover ──────────────────────────────────────────────────── */
-.cover {
-  background: var(--forest);
-  color: #fff;
-  padding: 72px 60px 60px;
-  position: relative;
-  overflow: hidden;
-}
-
-.cover::after {
-  content: "";
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 5px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--forest-light) 0px, var(--forest-light) 8px,
-    var(--gold)         8px, var(--gold)         10px,
-    var(--forest-light) 10px, var(--forest-light) 12px,
-    #fff                12px, #fff                13px,
-    var(--forest-light) 13px, var(--forest-light) 15px
-  );
-}
-
-.cover-eyebrow {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.cover-eyebrow::before {
-  content: "";
-  display: inline-block;
-  width: 28px;
-  height: 1px;
-  background: var(--gold);
-}
-
-.cover-title {
-  font-family: "Space Grotesk", ui-sans-serif, sans-serif;
-  font-size: clamp(28px, 4vw, 44px);
-  font-weight: 700;
-  line-height: 1.15;
-  color: #fff;
-  max-width: 700px;
-  margin-bottom: 20px;
-}
-
-.cover-subtitle {
-  font-size: 16px;
-  color: rgba(255,255,255,0.65);
-  max-width: 560px;
-  line-height: 1.6;
-  margin-bottom: 40px;
-}
-
-.cover-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-}
-
-.cover-meta-item {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.cover-meta-label {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.40);
-}
-
-.cover-meta-value {
-  font-size: 14px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.85);
-}
-
-/* ── Layout ─────────────────────────────────────────────────── */
-.page {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 0 32px 80px;
-}
-
-/* ── TOC ────────────────────────────────────────────────────── */
-.toc {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-left: 4px solid var(--forest);
-  border-radius: 6px;
-  padding: 28px 32px;
-  margin: 44px 0 60px;
-}
-
-.toc-title {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 16px;
-}
-
-.toc-list {
-  list-style: none;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px 40px;
-}
-
-.toc-list a {
-  font-size: 14px;
-  color: var(--forest-light);
-  text-decoration: none;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.toc-list a:hover { text-decoration: underline; }
-
-.toc-num {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 11px;
-  color: var(--muted);
-  width: 20px;
-  flex-shrink: 0;
-}
-
-/* ── Section headings ───────────────────────────────────────── */
-.section {
-  margin-bottom: 60px;
-}
-
-.section-eyebrow {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.section-eyebrow::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--line);
-}
-
-.section-title {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.2;
-  margin-bottom: 14px;
-}
-
-.section-lead {
-  font-size: 16px;
-  color: var(--muted);
-  max-width: 680px;
-  margin-bottom: 28px;
-  line-height: 1.65;
-}
-
-/* ── Feature cards ──────────────────────────────────────────── */
-.feature-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 28px;
-}
-
-.feature-card {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 20px 22px;
-}
-
-.feature-card-icon {
-  width: 36px;
-  height: 36px;
-  background: rgba(18,53,36,0.08);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
-  color: var(--forest);
-}
-
-.feature-card-title {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 6px;
-}
-
-.feature-card-body {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-/* ── View breakdowns ────────────────────────────────────────── */
-.view-block {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 24px;
-}
-
-.view-block-header {
-  padding: 18px 24px 16px;
-  border-bottom: 1px solid var(--line);
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.view-block-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.icon-forest { background: rgba(18,53,36,0.10); color: var(--forest); }
-.icon-sky    { background: rgba(62,124,177,0.12); color: var(--sky); }
-.icon-gold   { background: rgba(217,166,46,0.15); color: #9B7119; }
-.icon-clay   { background: rgba(181,72,52,0.12); color: var(--clay); }
-
-.view-block-name {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 4px;
-}
-
-.view-block-tagline {
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.view-block-body {
-  padding: 20px 24px;
-}
-
-.view-block-body p {
-  font-size: 14px;
-  color: var(--ink);
-  line-height: 1.7;
-  margin-bottom: 16px;
-}
-
-.view-block-body p:last-of-type { margin-bottom: 0; }
-
-/* ── Element list ───────────────────────────────────────────── */
-.element-list {
-  list-style: none;
-  margin-top: 16px;
-  border-top: 1px solid var(--line);
-  padding-top: 16px;
-}
-
-.element-item {
-  display: flex;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 14px;
-}
-
-.element-item:last-child { border-bottom: none; }
-
-.element-label {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--forest-light);
-  background: rgba(18,53,36,0.08);
-  padding: 2px 8px;
-  border-radius: 3px;
-  white-space: nowrap;
-  align-self: flex-start;
-  margin-top: 2px;
-  flex-shrink: 0;
-}
-
-.element-desc {
-  color: var(--muted);
-  line-height: 1.55;
-}
-
-/* ── Status pills ───────────────────────────────────────────── */
-.status-row {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 20px 0;
-}
-
-.status-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 14px 16px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  border-left-width: 3px;
-}
-
-.status-item.status-compliant  { border-left-color: var(--forest-light); }
-.status-item.status-expiring   { border-left-color: var(--gold); }
-.status-item.status-overdue    { border-left-color: var(--clay); }
-
-.status-pill {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 3px 8px;
-  border-radius: 3px;
-  white-space: nowrap;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-.pill-compliant  { background: rgba(31,92,61,0.12);  color: var(--forest-light); }
-.pill-expiring   { background: rgba(217,166,46,0.18); color: #9B7119; }
-.pill-overdue    { background: rgba(181,72,52,0.14);  color: var(--clay); }
-.pill-ack        { background: rgba(31,92,61,0.12);   color: var(--forest-light); }
-
-/* .status-content {} */
-
-.status-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 3px;
-}
-
-.status-conditions {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.55;
-}
-
-/* ── Callout boxes ──────────────────────────────────────────── */
-.callout {
-  border-radius: 6px;
-  padding: 16px 20px;
-  margin: 24px 0;
-  font-size: 14px;
-  line-height: 1.65;
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
-
-.callout-principle {
-  background: rgba(18,53,36,0.06);
-  border: 1px solid rgba(18,53,36,0.15);
-}
-
-.callout-note {
-  background: rgba(217,166,46,0.10);
-  border: 1px solid rgba(217,166,46,0.25);
-}
-
-.callout-scope {
-  background: rgba(62,124,177,0.08);
-  border: 1px solid rgba(62,124,177,0.20);
-}
-
-.callout-icon {
-  font-size: 16px;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-.callout strong {
-  display: block;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 4px;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 13px;
-}
-
-.callout p { color: var(--muted); margin: 0; }
-
-/* ── Workflow diagram ───────────────────────────────────────── */
-.workflow {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin: 20px 0;
-  position: relative;
-}
-
-.workflow-step {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  padding-bottom: 24px;
-  position: relative;
-}
-
-.workflow-step:last-child { padding-bottom: 0; }
-
-.workflow-step::before {
-  content: "";
-  position: absolute;
-  left: 17px;
-  top: 36px;
-  bottom: 0;
-  width: 2px;
-  background: var(--line);
-}
-
-.workflow-step:last-child::before { display: none; }
-
-.workflow-num {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--forest);
-  color: #fff;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
-}
-
-.workflow-content {
-  padding-top: 6px;
-}
-
-.workflow-title {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 4px;
-}
-
-.workflow-body {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-/* ── Who does what table ────────────────────────────────────── */
-.role-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  overflow: hidden;
-  margin: 20px 0;
-}
-
-.role-table th {
-  background: var(--paper);
-  padding: 10px 16px;
-  text-align: left;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  border-bottom: 1px solid var(--line);
-}
-
-.role-table td {
-  padding: 11px 16px;
-  border-bottom: 1px solid var(--line);
-  color: var(--ink);
-  vertical-align: top;
-  line-height: 1.5;
-}
-
-.role-table tr:last-child td { border-bottom: none; }
-
-.role-tag {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 2px 7px;
-  border-radius: 3px;
-  white-space: nowrap;
-}
-
-.tag-head { background: rgba(18,53,36,0.10); color: var(--forest); }
-.tag-rc   { background: rgba(62,124,177,0.12); color: #29618F; }
-.tag-auto { background: rgba(217,166,46,0.15); color: #9B7119; }
-
-/* ── Boundary box ───────────────────────────────────────────── */
-.boundary-box {
-  background: var(--panel);
-  border: 2px solid var(--forest);
-  border-radius: 8px;
-  padding: 24px 28px;
-  margin: 24px 0;
-}
-
-.boundary-box-title {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--forest);
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.boundary-cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.boundary-col-label {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-
-.boundary-col-label.yes { color: var(--forest-light); }
-.boundary-col-label.no  { color: var(--clay); }
-
-.boundary-col ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.boundary-col li {
-  font-size: 13px;
-  color: var(--muted);
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  line-height: 1.5;
-}
-
-.boundary-col li::before {
-  font-size: 12px;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.boundary-col.yes li::before { content: "✓"; color: var(--forest-light); }
-.boundary-col.no  li::before { content: "✕"; color: var(--clay); }
-
-/* ── Divider ────────────────────────────────────────────────── */
-.divider {
-  height: 1px;
-  background: var(--line);
-  margin: 52px 0;
-}
-
-/* ── Footer ─────────────────────────────────────────────────── */
-.footer {
-  background: var(--forest);
-  color: rgba(255,255,255,0.5);
-  padding: 32px 60px;
-  font-size: 12px;
-  font-family: "IBM Plex Mono", monospace;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.footer-left { line-height: 1.8; }
-.footer-right { color: rgba(255,255,255,0.3); }
-
-/* ── Print ──────────────────────────────────────────────────── */
-@media print {
-  body { background: #fff; }
-  .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .page { padding: 0 20px 40px; }
-  .view-block, .feature-card, .status-item, .callout, .boundary-box { break-inside: avoid; }
-  .section { break-inside: avoid; }
-}
-
-/* ── Responsive ─────────────────────────────────────────────── */
-@media (max-width: 680px) {
-  .cover { padding: 48px 24px 44px; }
-  .page { padding: 0 20px 60px; }
-  .feature-grid { grid-template-columns: 1fr; }
-  .toc-list { grid-template-columns: 1fr; }
-  .boundary-cols { grid-template-columns: 1fr; }
-  .footer { padding: 24px; flex-direction: column; align-items: flex-start; }
-}
-
-</style>
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/guide.css" />
 </head>
 <body>
 
@@ -688,6 +17,13 @@ body {
      COVER
 ================================================================ -->
 <div class="cover">
+  <a href="index.html" class="cover-logo-plate" aria-label="EduSpots website">
+    <img src="assets/eduspots-logo-horz.svg" alt="EduSpots" />
+  </a>
+  <a href="index.html" class="cover-backlink">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to tracker
+  </a>
   <div class="cover-eyebrow">EduSpots Operations Portfolio · Project 4 of 5</div>
   <h1 class="cover-title">Keeping Spots Safe — Training Compliance Tracker</h1>
   <p class="cover-subtitle">
@@ -746,7 +82,7 @@ body {
     headteachers in the EduSpots network.
   </p>
 
-  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-bottom:16px;">
+  <p class="section-body">
     Right now, training compliance across 130+ Catalysts likely lives in a
     patchwork of spreadsheets, WhatsApp conversations with RCs, and calendar
     reminders held by individuals. That works when the network is small. It starts
@@ -756,7 +92,7 @@ body {
     Volta cluster's, and if so, why?
   </p>
 
-  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-bottom:28px;">
+  <p class="section-body" style="margin-bottom:28px;">
     This tracker consolidates that picture. It doesn't replace the RC relationships
     or the <em>Keeping Spots Safe</em> policy — it sits above them, giving the Head
     of Programme and Product Operations a network-level view of training compliance
@@ -810,7 +146,7 @@ body {
     preference — it's a safeguarding requirement.
   </p>
 
-  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-bottom:24px;">
+  <p class="section-body" style="margin-bottom:24px;">
     The most important thing to understand about this tool is what it was
     deliberately designed <em>not</em> to do. A safeguarding compliance tracker
     that also stored incident reports, concerns, or case notes would be dangerous:
@@ -853,7 +189,7 @@ body {
     </div>
   </div>
 
-  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-top:20px;">
+  <p class="section-body tight">
     This boundary is structural, not just a display choice. The data model has
     no fields for incident or concern data — they cannot be added to a row in
     the database. They are not placeholders for a future version. For actual
@@ -881,7 +217,7 @@ body {
     </div>
   </div>
 
-  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-top:20px;">
+  <p class="section-body tight">
     This principle is built into every interactive element. The "Acknowledge —
     reminder sent" button on a flagged Catalyst doesn't change that Catalyst's
     compliance status, mark them as retrained, or close the flag. It records
@@ -1146,31 +482,31 @@ body {
   <h2 class="section-title">How status is calculated</h2>
   <p class="section-lead">Every status is computed by a named function with explicit rules — no hidden scoring, no black box, no behavioural inference.</p>
 
-  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-bottom:24px;">
+  <p class="section-body" style="margin-bottom:24px;">
     The rules are the same regardless of which view you're in. A Catalyst flagged
     as "overdue" in the Renewal Reminders view is overdue for the same reason
     their badge shows clay/red in the Compliance Roster. The reason is always
     shown explicitly alongside the status — never implied by a colour alone.
   </p>
 
-  <h3 style="font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:700; color:#1A1A16; margin-bottom:14px;">Training compliance status</h3>
+  <h3 class="section-subhead">Training compliance status</h3>
   <div class="status-row">
     <div class="status-item status-overdue">
-      <span class="status-pill pill-overdue">Overdue</span>
+      <span class="badge badge-overdue">Overdue</span>
       <div class="status-content">
         <div class="status-name">Today's date is past the Catalyst's expiry date.</div>
         <div class="status-conditions">The tool calculates: <strong>today &gt; completionDate + 12 months</strong>. The exact number of days lapsed is shown on the Renewal Reminders card: "Training expired X days ago."</div>
       </div>
     </div>
     <div class="status-item status-expiring">
-      <span class="status-pill pill-expiring">Expiring soon</span>
+      <span class="badge badge-expiring-soon">Expiring soon</span>
       <div class="status-content">
         <div class="status-name">The expiry date is within the next 30 days (and not already past).</div>
         <div class="status-conditions">The tool calculates: <strong>0 ≤ daysUntilExpiry ≤ 30</strong>. The exact countdown is shown: "Expires in X days — renewal not yet scheduled."</div>
       </div>
     </div>
     <div class="status-item status-compliant">
-      <span class="status-pill pill-compliant">Compliant</span>
+      <span class="badge badge-compliant">Compliant</span>
       <div class="status-content">
         <div class="status-name">Neither of the above conditions apply.</div>
         <div class="status-conditions">The expiry date is more than 30 days away. The Catalyst has a valid, current training record. No flag is raised.</div>
@@ -1256,7 +592,8 @@ body {
   <h2 class="section-title">Who does what</h2>
   <p class="section-lead">The tracker serves three roles differently. The tool does the date-tracking; people make every decision that matters.</p>
 
-  <table class="role-table">
+  <div class="table-wrap" style="margin: 20px 0;">
+  <table class="data-table">
     <thead>
       <tr>
         <th>Task</th>
@@ -1317,6 +654,7 @@ body {
       </tr>
     </tbody>
   </table>
+  </div>
 </section>
 
 <div class="divider"></div>
@@ -1388,7 +726,7 @@ body {
     Prototype — all Catalyst names, training dates, and compliance records are synthetic demo data
   </div>
   <div class="footer-right">
-    eduspots.org
+    <a href="https://eduspots.org" target="_blank" rel="noopener">eduspots.org</a>
   </div>
 </footer>
 
