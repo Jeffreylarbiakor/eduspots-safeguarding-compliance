@@ -7,143 +7,150 @@
   <link rel="icon" href="assets/favicon.ico" />
   <meta name="description" content="Safeguarding training compliance tracker for EduSpots' Keeping Spots Safe programme. Tracks who is trained, when training expires, and who is overdue for renewal." />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
   <!-- Chart.js via CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
-<div class="app-layout">
+<div class="app-shell">
 
   <!-- ── Sidebar ──────────────────────────────────────────────────────────── -->
   <aside class="sidebar" role="navigation" aria-label="Main navigation">
 
     <div class="sidebar-brand">
-      <a href="https://eduspots.org" target="_blank" rel="noopener" class="sidebar-logo" aria-label="EduSpots website">
+      <a href="https://eduspots.org" target="_blank" rel="noopener" class="sidebar-logo-plate" aria-label="EduSpots website">
         <img src="assets/eduspots-logo-horz.svg" alt="EduSpots" />
       </a>
-      <p class="sidebar-product">
-        Training Compliance Tracker
-      </p>
+      <p class="sidebar-app-name">Training Compliance Tracker</p>
     </div>
 
     <nav class="sidebar-nav">
-      <p class="nav-section-label">Views</p>
-      <a class="nav-link active" data-view="overview" href="#" role="button">
-        <svg class="nav-icon" width="16" height="16" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        Overview
-      </a>
-      <a class="nav-link" data-view="roster" href="#" role="button">
-        <svg class="nav-icon" width="16" height="16" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1.25"/><circle cx="3.5" cy="12" r="1.25"/><circle cx="3.5" cy="18" r="1.25"/></svg>
-        Compliance Roster
-      </a>
-      <a class="nav-link" data-view="clusters" href="#" role="button">
-        <svg class="nav-icon" width="16" height="16" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-        RC Clusters
-      </a>
-      <a class="nav-link" data-view="reminders" href="#" role="button">
-        <svg class="nav-icon" width="16" height="16" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-        Renewal Reminders
-      </a>
+      <button class="nav-link active" data-view="overview" aria-current="page">
+        <span class="nav-icon">
+          <svg width="16" height="16" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </span> Overview
+      </button>
+      <button class="nav-link" data-view="roster">
+        <span class="nav-icon">
+          <svg width="16" height="16" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1.25"/><circle cx="3.5" cy="12" r="1.25"/><circle cx="3.5" cy="18" r="1.25"/></svg>
+        </span> Compliance Roster
+      </button>
+      <button class="nav-link" data-view="clusters">
+        <span class="nav-icon">
+          <svg width="16" height="16" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </span> RC Clusters
+      </button>
+      <button class="nav-link" data-view="reminders">
+        <span class="nav-icon">
+          <svg width="16" height="16" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        </span> Renewal Reminders
+      </button>
     </nav>
 
     <div class="sidebar-footer">
-      <a href="safeguarding-tracker-guide.html" target="_blank" rel="noopener" class="sidebar-footer-guide">
+      <a href="safeguarding-tracker-guide.html" target="_blank" rel="noopener" class="guide-link">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         How this tool works
       </a>
-      <p style="margin-top:10px;">Prototype — synthetic data<br>EduSpots operations portfolio<br>Project #4 of 5</p>
+      <p class="sidebar-footer-text">Prototype — synthetic data<br>EduSpots operations portfolio<br>Project #4 of 5</p>
     </div>
 
   </aside>
 
   <!-- ── Main content ──────────────────────────────────────────────────────── -->
-  <main class="main-content">
+  <main class="main" id="main" role="main">
+    <div class="main-inner">
 
-    <!-- ── Overview view ─────────────────────────────────────────────────── -->
-    <section class="view" id="view-overview" aria-label="Overview">
+      <!-- ── Overview view ─────────────────────────────────────────────────── -->
+      <section class="view" id="view-overview" aria-label="Overview">
 
-      <div class="view-header">
-        <h1>Overview <span class="prototype-badge">Prototype</span></h1>
-        <p>Network-wide training compliance for the <em>Keeping Spots Safe</em> programme. Figures update automatically as training records change.</p>
-      </div>
+        <div class="view-header">
+          <h2 class="view-title">Overview <span class="prototype-badge">Prototype</span></h2>
+          <p class="view-subtitle">Network-wide training compliance for the <em>Keeping Spots Safe</em> programme. Figures update automatically as training records change.</p>
+        </div>
 
-      <div class="scope-note" role="note">
-        <strong>Scope: training compliance only</strong>
-        This tool tracks training dates and renewal status. It does not track safeguarding incidents, concerns, allegations, or any Catalyst-conduct information — and is not designed to. For actual safeguarding concerns, follow EduSpots' <em>Keeping Spots Safe</em> policy and contact the designated leads directly.
-      </div>
+        <div class="scope-note" role="note">
+          <strong>Scope: training compliance only</strong>
+          This tool tracks training dates and renewal status. It does not track safeguarding incidents, concerns, allegations, or any Catalyst-conduct information — and is not designed to. For actual safeguarding concerns, follow EduSpots' <em>Keeping Spots Safe</em> policy and contact the designated leads directly.
+        </div>
 
-      <!-- KPI row -->
-      <div class="kpi-row" role="list">
-        <div class="kpi-card" role="listitem">
-          <p class="kpi-label">Total Catalysts</p>
-          <p class="kpi-value" id="kpi-total">—</p>
-        </div>
-        <div class="kpi-card kpi-card--good" role="listitem">
-          <p class="kpi-label">Currently compliant</p>
-          <p class="kpi-value" id="kpi-pct">—</p>
-        </div>
-        <div class="kpi-card kpi-card--expiring" role="listitem">
-          <p class="kpi-label">Expiring in 30 days</p>
-          <p class="kpi-value" id="kpi-expiring">—</p>
-        </div>
-        <div class="kpi-card kpi-card--overdue" role="listitem">
-          <p class="kpi-label">Currently overdue</p>
-          <p class="kpi-value" id="kpi-overdue">—</p>
-        </div>
-        <div class="kpi-card" role="listitem">
-          <p class="kpi-label">Avg days overdue</p>
-          <p class="kpi-value" id="kpi-avg-days">—</p>
-        </div>
-      </div>
-
-      <!-- Charts -->
-      <div class="charts-row">
-        <div class="chart-panel">
-          <p class="chart-title">Compliance rate by RC cluster</p>
-          <div class="chart-wrap">
-            <canvas id="chart-cluster-bar" aria-label="Bar chart: compliance rate by RC cluster"></canvas>
+        <!-- KPI row -->
+        <div class="kpi-row" role="list">
+          <div class="kpi-card" role="listitem">
+            <span class="kpi-value" id="kpi-total">—</span>
+            <span class="kpi-label">Total Catalysts</span>
           </div>
-        </div>
-        <div class="chart-panel">
-          <p class="chart-title">Training completions — last 12 months</p>
-          <div class="chart-wrap">
-            <canvas id="chart-completion-line" aria-label="Line chart: training completions over last 12 months"></canvas>
+          <div class="kpi-card kpi-good" role="listitem">
+            <span class="kpi-value" id="kpi-pct">—</span>
+            <span class="kpi-label">Currently compliant</span>
           </div>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ── Compliance Roster view ─────────────────────────────────────────── -->
-    <section class="view hidden" id="view-roster" aria-label="Compliance roster">
-
-      <div class="view-header">
-        <h1>Compliance Roster</h1>
-        <p>All Catalysts and their current training status. Click any row to see training history. Filter by RC cluster or status.</p>
-      </div>
-
-      <div class="table-panel">
-        <div class="table-toolbar">
-          <div>
-            <span class="table-toolbar-title">All Catalysts</span>
-            <span class="table-count" id="roster-count"></span>
+          <div class="kpi-card kpi-alert" role="listitem">
+            <span class="kpi-value" id="kpi-expiring">—</span>
+            <span class="kpi-label">Expiring in 30 days</span>
           </div>
-          <div class="filter-row">
-            <select class="filter-select" id="filter-rc" aria-label="Filter by RC cluster">
-              <option value="all">All RC clusters</option>
-            </select>
-            <select class="filter-select" id="filter-status" aria-label="Filter by status">
-              <option value="all">All statuses</option>
-              <option value="compliant">Compliant</option>
-              <option value="expiring-soon">Expiring soon</option>
-              <option value="overdue">Overdue</option>
-            </select>
+          <div class="kpi-card kpi-alert" role="listitem">
+            <span class="kpi-value" id="kpi-overdue">—</span>
+            <span class="kpi-label">Currently overdue</span>
+          </div>
+          <div class="kpi-card" role="listitem">
+            <span class="kpi-value" id="kpi-avg-days">—</span>
+            <span class="kpi-label">Avg days overdue</span>
           </div>
         </div>
 
-        <div style="overflow-x:auto;">
-          <table aria-label="Catalyst compliance roster">
+        <!-- Charts -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <h3 class="chart-title">Compliance rate by RC cluster</h3>
+            <div class="chart-wrap">
+              <canvas id="chart-cluster-bar" aria-label="Bar chart: compliance rate by RC cluster"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">Training completions — last 12 months</h3>
+            <div class="chart-wrap">
+              <canvas id="chart-completion-line" aria-label="Line chart: training completions over last 12 months"></canvas>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── Compliance Roster view ─────────────────────────────────────────── -->
+      <section class="view hidden" id="view-roster" aria-label="Compliance roster">
+
+        <div class="sticky-header">
+          <div class="view-header" style="margin-bottom:16px;">
+            <h2 class="view-title">Compliance Roster</h2>
+            <p class="view-subtitle">All Catalysts and their current training status. Click any row to see training history. Filter by RC cluster or status.</p>
+          </div>
+
+          <div class="filter-bar" style="margin-bottom:0;">
+            <div class="filter-group">
+              <label for="filter-rc" class="filter-label">RC cluster</label>
+              <select class="filter-select" id="filter-rc" aria-label="Filter by RC cluster">
+                <option value="all">All RC clusters</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="filter-status" class="filter-label">Status</label>
+              <select class="filter-select" id="filter-status" aria-label="Filter by status">
+                <option value="all">All statuses</option>
+                <option value="compliant">Compliant</option>
+                <option value="expiring-soon">Expiring soon</option>
+                <option value="overdue">Overdue</option>
+              </select>
+            </div>
+            <span class="filter-count" id="roster-count"></span>
+          </div>
+        </div>
+
+        <div class="table-wrap" style="margin-top:16px;">
+          <table class="data-table" aria-label="Catalyst compliance roster">
             <thead>
               <tr>
                 <th>Name</th>
@@ -157,112 +164,109 @@
             <tbody id="roster-tbody"></tbody>
           </table>
         </div>
-      </div>
 
-    </section>
+      </section>
 
-    <!-- ── RC Clusters view ───────────────────────────────────────────────── -->
-    <section class="view hidden" id="view-clusters" aria-label="RC clusters">
+      <!-- ── RC Clusters view ───────────────────────────────────────────────── -->
+      <section class="view hidden" id="view-clusters" aria-label="RC clusters">
 
-      <div class="view-header">
-        <h1>RC Clusters</h1>
-        <p>Training compliance by Regional Coordinator. Each RC is accountable for following up renewals within their cluster.</p>
-      </div>
-
-      <div class="table-panel">
-        <div class="table-toolbar">
-          <span class="table-toolbar-title">Regional Coordinators</span>
-          <span class="table-count">4 clusters</span>
+        <div class="view-header">
+          <h2 class="view-title">RC Clusters</h2>
+          <p class="view-subtitle">Training compliance by Regional Coordinator. Each RC is accountable for following up renewals within their cluster.</p>
         </div>
 
-        <div style="overflow-x:auto;">
-          <table aria-label="RC cluster compliance summary">
+        <div class="table-wrap">
+          <table class="data-table" aria-label="RC cluster compliance summary">
             <thead>
               <tr>
                 <th>Regional Coordinator</th>
                 <th>Region</th>
-                <th style="text-align:center;">Total</th>
-                <th style="text-align:center;">Compliant</th>
-                <th style="text-align:center;">Expiring soon</th>
-                <th style="text-align:center;">Overdue</th>
-                <th style="text-align:center;">Cluster %</th>
+                <th class="td-num">Total</th>
+                <th class="td-num">Compliant</th>
+                <th class="td-num">Expiring soon</th>
+                <th class="td-num">Overdue</th>
+                <th class="td-num">Cluster %</th>
               </tr>
             </thead>
             <tbody id="clusters-tbody"></tbody>
           </table>
         </div>
-      </div>
 
-    </section>
+      </section>
 
-    <!-- ── Renewal Reminders view ─────────────────────────────────────────── -->
-    <section class="view hidden" id="view-reminders" aria-label="Renewal reminders">
+      <!-- ── Renewal Reminders view ─────────────────────────────────────────── -->
+      <section class="view hidden" id="view-reminders" aria-label="Renewal reminders">
 
-      <div class="view-header">
-        <h1>Renewal Reminders</h1>
-        <p>Every Catalyst who is expiring soon or overdue. Use the acknowledge button to log that the relevant RC has been notified and owns follow-up.</p>
-      </div>
+        <div class="sticky-header">
+          <div class="view-header" style="margin-bottom:0;">
+            <h2 class="view-title">Renewal Reminders</h2>
+            <p class="view-subtitle">
+              Every Catalyst who is expiring soon or overdue. Use the acknowledge button to log
+              that the relevant RC has been notified and owns follow-up.
+              <span class="mono" id="reminders-count" aria-live="polite"></span>
+            </p>
+          </div>
+        </div>
 
-      <div class="scope-note" role="note">
-        <strong>Human handoff — how this works</strong>
-        Acknowledging a reminder logs that an RC has been contacted and has taken ownership of the follow-up. It does not mark the Catalyst as retrained or change their compliance status in any way. Only a real, completed training event recorded in the data can do that.
-      </div>
+        <div class="scope-note" role="note" style="margin-top:20px;">
+          <strong>Human handoff — how this works</strong>
+          Acknowledging a reminder logs that an RC has been contacted and has taken ownership of the follow-up. It does not mark the Catalyst as retrained or change their compliance status in any way. Only a real, completed training event recorded in the data can do that.
+        </div>
 
-      <div class="reminders-header">
-        <p class="reminders-count" id="reminders-count" aria-live="polite"></p>
-      </div>
+        <div class="flagged-list" id="reminders-list" aria-label="Renewal reminder list"></div>
 
-      <div id="reminders-list" aria-label="Renewal reminder list"></div>
+      </section>
 
-    </section>
+    </div><!-- /.main-inner -->
+  </main><!-- /.main -->
 
-  </main><!-- /.main-content -->
-
-</div><!-- /.app-layout -->
+</div><!-- /.app-shell -->
 
 <!-- ── Detail modal ──────────────────────────────────────────────────────────── -->
-<div class="modal-overlay hidden" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-name" aria-hidden="true">
-  <div class="modal">
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-name" aria-hidden="true">
+  <div class="modal" id="modal">
+
     <div class="modal-header">
-      <h2 id="modal-name"></h2>
-      <button class="modal-close" id="modal-close" aria-label="Close detail view">✕</button>
+      <div>
+        <h2 class="modal-title" id="modal-name"></h2>
+        <span class="modal-sub" id="modal-sub"></span>
+      </div>
+      <div class="modal-header-right">
+        <span class="badge" id="modal-status"></span>
+        <button class="modal-close" id="modal-close" aria-label="Close detail view">✕</button>
+      </div>
     </div>
+
     <div class="modal-body">
 
-      <div class="modal-field">
-        <p class="modal-field-label">Status</p>
-        <p class="modal-field-value" id="modal-status"></p>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <span class="detail-label">Spot</span>
+          <span class="detail-value" id="modal-spot"></span>
+        </div>
+        <div class="detail-card">
+          <span class="detail-label">Regional Coordinator</span>
+          <span class="detail-value" id="modal-rc"></span>
+        </div>
+        <div class="detail-card">
+          <span class="detail-label">Region</span>
+          <span class="detail-value" id="modal-region"></span>
+        </div>
+        <div class="detail-card">
+          <span class="detail-label">Next renewal due</span>
+          <span class="detail-value mono" id="modal-expiry"></span>
+        </div>
       </div>
 
-      <div class="modal-field modal-field hidden" id="modal-reason-row">
-        <p class="modal-field-label">Reason for flag</p>
-        <p class="modal-field-value" id="modal-reason"></p>
+      <div class="modal-section hidden" id="modal-reason-row">
+        <h3 class="modal-section-title">Reason for flag</h3>
+        <ul class="modal-reasons"><li id="modal-reason"></li></ul>
       </div>
 
-      <div class="modal-field">
-        <p class="modal-field-label">Spot</p>
-        <p class="modal-field-value" id="modal-spot"></p>
+      <div class="modal-section">
+        <h3 class="modal-section-title">Training history</h3>
+        <ul class="modal-history-list" id="modal-history" aria-label="Training completion dates"></ul>
       </div>
-
-      <div class="modal-field">
-        <p class="modal-field-label">Regional Coordinator</p>
-        <p class="modal-field-value" id="modal-rc"></p>
-      </div>
-
-      <div class="modal-field">
-        <p class="modal-field-label">Region</p>
-        <p class="modal-field-value" id="modal-region"></p>
-      </div>
-
-      <div class="modal-field">
-        <p class="modal-field-label">Next renewal due</p>
-        <p class="modal-field-value td-mono" id="modal-expiry"></p>
-      </div>
-
-      <hr class="modal-divider" />
-
-      <p class="modal-history-title">Training history</p>
-      <ul id="modal-history" aria-label="Training completion dates"></ul>
 
       <div class="modal-scope-note" role="note">
         This view shows training dates only. No incident, conduct, or case information is stored or displayed here — by design.
