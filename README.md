@@ -59,7 +59,7 @@ Automation does one thing: tracks dates and flags renewals. Humans do everything
 KPI row (total Catalysts, % compliant, expiring in 30 days, currently overdue, average days overdue) plus two charts: compliance rate by RC cluster (bar) and training completions over the last 12 months (line). The completions chart shows whether the network is keeping pace with renewals — not individual behaviour.
 
 ### Compliance Roster
-Full table of all Catalysts: name, Spot, RC, completion date, expiry date, status badge. Filterable by RC cluster and status. Clicking any row opens a detail modal showing training history (completion dates only — a simple "Trained: [date]" list and next renewal due date). No contact information, no conduct fields.
+Full table of all Catalysts: name, Spot, RC, completion date, expiry date, status badge. Filterable by RC cluster and status. Clicking any row opens a detail panel with Spot, Regional Coordinator, Region, and next renewal due date, plus training history (completion dates only, most recent marked "current") and — if flagged — the specific reason. No contact information, no conduct fields.
 
 ### RC Clusters
 Compliance summary grouped by Regional Coordinator: total / compliant / expiring soon / overdue counts and cluster compliance %. Same structure as Projects #1 and #2.
@@ -71,39 +71,50 @@ Every Catalyst who is expiring soon or overdue, with the specific date-based rea
 
 ## Design system
 
-Identical to Projects #1–3:
+Same token set and component language as the rest of the EduSpots operations portfolio (ported from the shared Resource & Device Distribution Tracker component bundle):
 
 ```css
---forest: #123524   /* primary, sidebar */
---gold:   #D9A62E   /* expiring soon */
---sky:    #3E7CB1   /* secondary data colour */
---clay:   #B54834   /* overdue only — not decorative */
---paper:  #F6F2E9   /* background */
+--forest:       #123524   /* primary — sidebar, headings, forest-strength accents */
+--forest-light: #1F5C3D   /* compliant status, hover states */
+--gold:         #D9A62E   /* expiring soon */
+--gold-soft:    #F0D89B   /* reserved accent tone */
+--sky:          #3E7CB1   /* secondary data colour — completions line chart */
+--clay:         #B54834   /* overdue only — not decorative */
+--paper:        #F6F2E9   /* app background */
+--panel:        #FFFFFF   /* card / table / modal surfaces */
+--ink:          #1A1A16   /* body text */
+--muted:        #6B6558   /* secondary text, labels */
+--line:         rgba(26,26,22,0.10)  /* borders */
 ```
 
-Fonts: Space Grotesk (headings), IBM Plex Sans (body), IBM Plex Mono (timestamps, badges, IDs). Forest-green sidebar with sticky viewport-pinned layout and Kente-inspired accent stripe. The visual register is deliberately calm and administrative — plain tables and status badges, nothing that dramatises individual records.
+Fonts: Space Grotesk (headings), IBM Plex Sans (body), IBM Plex Mono (timestamps, badges, IDs). A forest-green sidebar with a sticky, viewport-pinned layout and a forest → gold → sky → clay gradient accent stripe down its right edge — echoed on the product guide's cover and footer. Shared components across every view: KPI cards, chart cards, a sticky header + filter bar, a data table, flagged alert cards, and a detail-grid modal. The visual register is deliberately calm and administrative — plain tables and status badges, nothing that dramatises individual records.
 
 ---
 
 ## Stack
 
 - Plain HTML / CSS / JavaScript — no build step, no npm required
-- [Chart.js 4.4](https://www.chartjs.org/) via CDN for charts
+- [Chart.js 4.4.3](https://www.chartjs.org/) via CDN for charts
 - Seeded PRNG (`mulberry32`) for reproducible synthetic demo data
 
 ```
 eduspots-safeguarding-compliance/
-  index.html
-  css/styles.css
-  js/data.js          seeded synthetic generator + status rules
-  js/real-data.js     real Spot / RC / programme facts
-  js/charts.js        Chart.js wrappers
-  js/app.js           rendering, nav, filters, modal
-  assets/             logo
+  index.html                        app shell + all four views + modal
+  safeguarding-tracker-guide.html    standalone product guide (non-technical walkthrough)
+  css/styles.css                     shared design system + app components
+  css/guide.css                      guide-only components (cover, TOC, workflow, etc.)
+  js/data.js                         seeded synthetic generator + status rules
+  js/real-data.js                    real Spot / RC / programme facts
+  js/charts.js                       Chart.js wrappers
+  js/app.js                          rendering, nav, filters, modal
+  assets/                            logo, favicon
   README.md
   LICENSE
   .gitignore
 ```
+
+### Product guide
+`safeguarding-tracker-guide.html` is a self-contained, print-friendly walkthrough of the tool aimed at a non-technical stakeholder (e.g. Head of Education, trustees) — what each view does, how status is calculated, a typical weekly workflow, and a "who does what" table. It shares `css/styles.css`'s tokens, fonts, badges, and table styling with the app itself, with its own `css/guide.css` for guide-only layout (cover, table of contents, workflow timeline, boundary box). Linked from the app's sidebar footer ("How this tool works").
 
 ---
 
